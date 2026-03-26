@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Dict, List
+from typing import List
 import pandas as pd
 
 from src.preprocessing import preprocess_patient_row
@@ -34,15 +34,29 @@ def recommend_top_k(
     )
 
     if candidates.empty:
-        return pd.DataFrame([{
-            "patient_id": patient["patient_id"],
-            "severity": severity,
-            "required_department": required_department,
-            "hospital_id": None,
-            "hospital_name": "No available hospital",
-            "final_score": 0.0,
-            "explanation": "조건을 만족하는 병원을 찾지 못했습니다.",
-        }])
+        return pd.DataFrame(
+            [
+                {
+                    "rank": 1,
+                    "patient_id": patient["patient_id"],
+                    "severity": severity,
+                    "required_department": required_department,
+                    "hospital_id": None,
+                    "hospital_name": "No available hospital",
+                    "distance_km": None,
+                    "travel_time_min": None,
+                    "estimated_wait_min": None,
+                    "total_time_min": None,
+                    "distance_score": None,
+                    "waiting_score": None,
+                    "specialty_score": None,
+                    "hospital_score_norm": None,
+                    "urgency_fit_score": None,
+                    "final_score": 0.0,
+                    "explanation": "조건을 만족하는 병원을 찾지 못했습니다.",
+                }
+            ]
+        )
 
     candidates = compute_distance_and_time_features(
         candidates,
@@ -57,6 +71,8 @@ def recommend_top_k(
     )
 
     ranked = score_hospitals(candidates, severity=severity).head(top_k).copy()
+    ranked = ranked.reset_index(drop=True)
+    ranked["rank"] = ranked.index + 1
 
     ranked["patient_id"] = patient["patient_id"]
     ranked["severity"] = severity
@@ -69,10 +85,11 @@ def recommend_top_k(
             required_department=required_department,
             severity=severity,
         ),
-        axis=1
+        axis=1,
     )
 
     result_columns = [
+        "rank",
         "patient_id",
         "severity",
         "required_department",
@@ -91,7 +108,7 @@ def recommend_top_k(
         "explanation",
     ]
 
-    return ranked[result_columns].reset_index(drop=True)
+    return ranked[result_columns]
 
 
 def recommend_for_all_patients(

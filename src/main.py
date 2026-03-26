@@ -1,5 +1,6 @@
 from __future__ import annotations
 import os
+import pandas as pd
 
 from src.config import Paths, TOP_K
 from src.data_loader import (
@@ -8,10 +9,12 @@ from src.data_loader import (
     load_symptom_department_map,
 )
 from src.recommender import recommend_for_all_patients
+from src.visualization import plot_recommendation_scatter
 
 
 def main() -> None:
     paths = Paths()
+    model_name = "proposed"
 
     hospitals_df = load_hospital_data(paths.hospital_data)
     patients_df = load_patient_data(paths.patient_data)
@@ -24,12 +27,47 @@ def main() -> None:
         top_k=TOP_K,
     )
 
-    os.makedirs(os.path.dirname(paths.output_path), exist_ok=True)
-    results_df.to_csv(paths.output_path, index=False, encoding="utf-8-sig")
+    model_output_dir = os.path.join("outputs", model_name)
+    os.makedirs(model_output_dir, exist_ok=True)
 
-    print("=== Recommendation Results ===")
-    print(results_df[["patient_id", "hospital_name", "final_score", "explanation"]].to_string(index=False))
-    print(f"\nSaved to: {paths.output_path}")
+    csv_output_path = os.path.join(model_output_dir, "recommendations.csv")
+    img_output_path = os.path.join(model_output_dir, "recommendation_scatter.png")
+
+    results_df.to_csv(csv_output_path, index=False, encoding="utf-8-sig")
+
+    plot_recommendation_scatter(
+        hospitals_df=hospitals_df,
+        patients_df=patients_df,
+        recommendations_df=results_df,
+        output_path=img_output_path,
+        model_name=model_name,
+    )
+
+    display_cols = [
+        "patient_id",
+        "rank",
+        "severity",
+        "required_department",
+        "hospital_name",
+        "distance_km",
+        "estimated_wait_min",
+        "total_time_min",
+        "final_score",
+    ]
+
+    display_df = results_df[display_cols].copy()
+
+    rounded_cols = ["distance_km", "estimated_wait_min", "total_time_min"]
+    for col in rounded_cols:
+        display_df[col] = display_df[col].astype(float).round(2)
+
+    display_df["final_score"] = display_df["final_score"].astype(float).round(6)
+
+    print("\n=== Recommendation Results (Summary) ===")
+    print(display_df.to_string(index=False))
+
+    print(f"\nSaved detailed results to: {csv_output_path}")
+    print(f"Saved scatter plot to: {img_output_path}")
 
 
 if __name__ == "__main__":

@@ -94,4 +94,17 @@ def score_hospitals(df: pd.DataFrame, severity: str) -> pd.DataFrame:
         + result["urgency_fit_score"] * weights["urgency_fit_score"]
     )
 
-    return result.sort_values(by="final_score", ascending=False).reset_index(drop=True)
+    result["final_score"] = result["final_score"].round(6)
+
+    result = result.sort_values(
+        by=[
+            "final_score",
+            "total_time_min",
+            "specialty_score",
+            "hospital_score_norm",
+            "distance_km",
+        ],
+        ascending=[False, True, False, False, True],
+    ).reset_index(drop=True)
+
+    return result

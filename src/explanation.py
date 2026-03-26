@@ -25,5 +25,7 @@ def generate_explanation(row: pd.Series, required_department: str, severity: str
     if severity in {"critical", "severe"} and row.get("severe_case_supported", 0) == 1:
         reasons.append("중증 응급환자 대응 가능")
 
+    reasons.append("동일 점수 병원 간에는 총 도달시간 기준으로 우선순위 결정")
+
     explanation = f"{row['hospital_name']} 추천 이유: " + ", ".join(reasons) + "."
     return explanation
