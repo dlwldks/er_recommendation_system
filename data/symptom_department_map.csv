@@ -1,0 +1,12 @@
+symptom,department,weight
+chest pain,cardiology,1.0
+shortness of breath,emergency_medicine,1.0
+shortness of breath,pulmonology,0.8
+head trauma,neurology,1.0
+head trauma,trauma_surgery,0.9
+vomiting,internal_medicine,0.6
+loss of consciousness,emergency_medicine,1.0
+ankle pain,orthopedics,1.0
+swelling,orthopedics,0.7
+fever,internal_medicine,0.8
+cough,pulmonology,0.8

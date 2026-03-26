@@ -1,0 +1,5 @@
+patient_id,symptoms,latitude,longitude,age,heart_rate,systolic_bp,spo2,consciousness
+P001,"chest pain;shortness of breath",35.1500,129.0600,67,118,95,91,alert
+P002,"ankle pain;swelling",35.1400,129.0400,24,82,120,99,alert
+P003,"head trauma;vomiting;loss of consciousness",35.1700,129.0700,45,110,88,93,verbal
+P004,"fever;cough",35.1300,129.0500,31,95,118,97,alert

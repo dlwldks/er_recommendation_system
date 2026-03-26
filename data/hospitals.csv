@@ -1,0 +1,6 @@
+hospital_id,hospital_name,latitude,longitude,is_open,departments,er_available,trauma_available,capacity_available,estimated_wait_min,hospital_score,severe_case_supported
+H001,Busan University Hospital,35.1379,129.0556,1,"emergency_medicine;cardiology;neurology;orthopedics",1,1,1,18,92,1
+H002,Good Morning General Hospital,35.1541,129.0615,1,"emergency_medicine;internal_medicine;orthopedics",1,0,1,35,78,0
+H003,Central Medical Center,35.1660,129.0720,0,"emergency_medicine;cardiology",1,0,1,12,81,0
+H004,Daesin Hospital,35.1450,129.0300,1,"internal_medicine;family_medicine",0,0,1,20,70,0
+H005,City Trauma Center,35.1800,129.0800,1,"emergency_medicine;trauma_surgery;orthopedics;neurology",1,1,1,25,88,1
