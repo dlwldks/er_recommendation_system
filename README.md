@@ -1,5 +1,12 @@
 # 🚑 ER Recommendation System (응급실 추천 시스템)
 
+## Portfolio overview / 평가 범위
+
+Research prototype comparing severity-aware filter-and-rank and capacity-aware allocation. Symptom-to-department mapping, candidate filtering, travel/wait estimates and ranking precede optional allocation of simulated capacity in severity order.
+
+The default branch contains code and dependency declarations, but not the input CSVs or output image referenced below. Supply authorized or synthetic data before execution. Clinical validation and real-world congestion reduction are not established. Not intended for clinical decisions.
+
+
 ## 📌 프로젝트 개요
 
 본 프로젝트는 환자의 증상, 위치, 응급도를 기반으로
